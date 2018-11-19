@@ -29,7 +29,7 @@ X = X[:, 1:]
 
 # Splitting the dataset into the Training set and Test set
 from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25, random_state = 0)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=0)
 
 # Feature Scaling
 from sklearn.preprocessing import StandardScaler
@@ -64,3 +64,10 @@ y_pred = (y_pred > 0.5)
 # Making the Confusion Matrix
 from sklearn.metrics import confusion_matrix
 cm = confusion_matrix(y_test, y_pred)
+
+
+# Bonus: Prediction for single customer
+sc2 = StandardScaler()
+ab = sc2.transform(np.array([[0, 0, 600, 1, 40, 3, 60000, 2, 1, 1, 50000]]))
+new_prediction = classifier.predict(sc.transform(np.array([[0, 0, 600, 1, 40, 3, 60000, 2, 1, 1, 50000]])))
+prediction = (new_prediction > 0.5)

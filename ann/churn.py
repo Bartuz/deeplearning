@@ -54,7 +54,7 @@ classifier.add(Dense(1, kernel_initializer='uniform', activation='sigmoid'))
 # compiling the ANN
 classifier.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
-classifier.fit(X_train, y_train, batch_size=10, epochs=100)
+classifier.fit(X_train, y_train, batch_size=10, epochs=10)
 # 3: Making prediction and evaluating the model
 
 # Predicting the Test set results
@@ -67,7 +67,29 @@ cm = confusion_matrix(y_test, y_pred)
 
 
 # Bonus: Prediction for single customer
-sc2 = StandardScaler()
-ab = sc2.transform(np.array([[0, 0, 600, 1, 40, 3, 60000, 2, 1, 1, 50000]]))
+ab = sc.transform(np.array([[0, 0, 600, 1, 40, 3, 60000, 2, 1, 1, 50000]]))
 new_prediction = classifier.predict(sc.transform(np.array([[0, 0, 600, 1, 40, 3, 60000, 2, 1, 1, 50000]])))
 prediction = (new_prediction > 0.5)
+
+# Part 4 Evaluating, Improving and tunning ANN
+
+# Evaluating:
+from keras.wrappers.scikit_learn import KerasClassifier
+from sklearn.model_selection import cross_val_score
+def build_classifier():
+    classifier = Sequential()
+    # first hidden layer
+    classifier.add(Dense(6, kernel_initializer='uniform', activation='relu', input_dim=11))
+    # second hidden layer
+    classifier.add(Dense(6, kernel_initializer='uniform', activation='relu'))
+    # output layer
+    classifier.add(Dense(1, kernel_initializer='uniform', activation='sigmoid'))
+    # compiling the ANN
+    classifier.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+    return classifier
+
+classifier = KerasClassifier(build_fn=build_classifier, batch_size=10, epochs=10)
+# TODO: Fix n_jobs on Macos
+accuracies = cross_val_score(estimator=classifier, X=X_train, y=y_train, cv=10) # n_jobs=-1)
+mean = accuracies.mean()
+variance = accuracies.std()

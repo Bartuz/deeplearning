@@ -15,6 +15,11 @@ classifier.add(Conv2D(filters=32, kernel_size=(3, 3), input_shape=(64, 64, 3), a
 # Step 2 - (Max) Pooling
 classifier.add(MaxPool2D(pool_size=(2, 2)))
 
+# Adding a second conv. layer
+# No need to specify shape as keras knows previous player was pooling :)
+classifier.add(Conv2D(filters=32, kernel_size=(3, 3), activation='relu'))
+classifier.add(MaxPool2D(pool_size=(2, 2)))
+
 # Step 3 - Flattening
 classifier.add(Flatten())
 

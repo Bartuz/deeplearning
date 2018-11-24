@@ -42,12 +42,19 @@ X_test = sc.transform(X_test)
 import keras
 from keras.models import Sequential
 from keras.layers import Dense
+from keras.layers import Dropout
 
 classifier = Sequential()
 # first hidden layer
 classifier.add(Dense(6, kernel_initializer='uniform', activation='relu', input_dim=11))
+# with droput
+classifier.add(Dropout(p=0.1))
+
 # second hidden layer
 classifier.add(Dense(6, kernel_initializer='uniform', activation='relu'))
+# with droput
+classifier.add(Dropout(p=0.1))
+
 # output layer
 classifier.add(Dense(1, kernel_initializer='uniform', activation='sigmoid'))
 
